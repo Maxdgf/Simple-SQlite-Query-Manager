@@ -87,7 +87,7 @@ class SqliteQueryManagerApp(tk.Tk):
             else:
                 messagebox.showerror("Error", "Db file path not exists!")
         else:
-            messagebox.showerror("Error", "Db file path is empty!")
+            messagebox.showwarning("Warning", "Db file not selected!")
     
     #асинхронная функция для выполнения запроса к бд(не перегружающая главный поток программы)
     async def execute_query(self):
@@ -108,7 +108,7 @@ class SqliteQueryManagerApp(tk.Tk):
 
                 messagebox.showinfo("Info", f"Your query:\n[{self.user_query.get()}]\ncompleted succesfully! See result now)))")
             else:
-                messagebox.showerror("Error", "Please, load db file.")    
+                messagebox.showerror("Error", "Please, select db file.")    
         except Exception as e:
             messagebox.showerror("Error", f"Query execution failed.\nexception:\n{e}")
     #==========================================================================================================Функции
