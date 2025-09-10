@@ -7,5 +7,4 @@
 | <a href=".github/bd_screen.png">See demo screen</a> |
 
 ## 📃Install important libs:
-##
     pip install -r requirements.txt
