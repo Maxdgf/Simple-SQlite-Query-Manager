@@ -104,14 +104,16 @@ class SqliteQueryManagerApp(tk.Tk):
                 connection.commit() #сохраняем изменения
                 
                 result = cursor.fetchall()
+                connection.close() #закрываем подключение
+
                 df = pd.DataFrame(result)
                 result_table = tabulate(df, headers="keys", tablefmt="grid")
 
-                self.query_result_field.insert("1.0", result_table)
-                
-                connection.close() #закрываем подключение
-
-                messagebox.showinfo("Info", f"Your query:\n[{self.user_query.get()}]\ncompleted succesfully! See result now)))")
+                if len(result_table) > 0: #проверяем, не пуст ли результат
+                    self.query_result_field.insert("1.0", result_table)
+                    messagebox.showinfo("Info", f"Your query:\n[{self.user_query.get()}]\ncompleted succesfully! See result now)))")
+                else:
+                    messagebox.showwarning("Warning", f"Your query:\n[{self.user_query.get()}]\ncompleted succesfully, but query result is empty(")
             else:
                 messagebox.showerror("Error", "Please, select db file.")    
         except Exception as e:
