@@ -80,7 +80,7 @@ class SqliteQueryManagerApp(tk.Tk):
     #функция захвата файла .db из файловой системы с помощью tkinter filedialog
     def pick_db_file(self):
         db_path = filedialog.askopenfilename(title="Select DB file", filetypes=[("DB file", "*.db"), ("All files", "*.")])
-        
+
         if len(db_path) > 0:
             if os.path.exists(db_path):
                 self.selected_db.set(db_path)
@@ -88,7 +88,7 @@ class SqliteQueryManagerApp(tk.Tk):
                 messagebox.showerror("Error", "Db file path not exists!")
         else:
             messagebox.showwarning("Warning", "Db file not selected!")
-    
+
     #асинхронная функция для выполнения запроса к бд(не перегружающая главный поток программы)
     async def execute_query(self):
         try:
@@ -98,13 +98,17 @@ class SqliteQueryManagerApp(tk.Tk):
                 #подключаемся, создаём курсор
                 connection = sqlite3.connect(self.selected_db.get(), timeout=self.DB_CONNECTION_TIMEOUT)
                 cursor = connection.cursor()
-                
+
                 cursor.execute(self.user_query.get()) 
+                connection.commit() #сохраняем изменения
+                
                 result = cursor.fetchall()
                 df = pd.DataFrame(result)
                 result_table = tabulate(df, headers="keys", tablefmt="grid")
 
                 self.query_result_field.insert("1.0", result_table)
+                
+                connection.close() #закрываем подключение
 
                 messagebox.showinfo("Info", f"Your query:\n[{self.user_query.get()}]\ncompleted succesfully! See result now)))")
             else:
@@ -112,7 +116,7 @@ class SqliteQueryManagerApp(tk.Tk):
         except Exception as e:
             messagebox.showerror("Error", f"Query execution failed.\nexception:\n{e}")
     #==========================================================================================================Функции
-    
+
 if __name__ == "__main__":
     sqliteQueryManagerApp = SqliteQueryManagerApp()
     async_mainloop(sqliteQueryManagerApp) #запуск главного асинхронного цикла приложения(необходимо для работы асинхронных функций)
