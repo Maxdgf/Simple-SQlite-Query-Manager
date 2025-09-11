@@ -84,6 +84,7 @@ class SqliteQueryManagerApp(tk.Tk):
         if len(db_path) > 0:
             if os.path.exists(db_path):
                 self.selected_db.set(db_path)
+                messagebox.showinfo("Info", "Db file selected!")
             else:
                 messagebox.showerror("Error", "Db file path not exists!")
         else:
