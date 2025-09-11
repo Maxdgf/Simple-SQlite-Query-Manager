@@ -121,5 +121,6 @@ class SqliteQueryManagerApp(tk.Tk):
     #==========================================================================================================Функции
 
 if __name__ == "__main__":
-    sqliteQueryManagerApp = SqliteQueryManagerApp()
+    sqliteQueryManagerApp = SqliteQueryManagerApp() #инициализируем класс приложения
     async_mainloop(sqliteQueryManagerApp) #запуск главного асинхронного цикла приложения(необходимо для работы асинхронных функций)
+
