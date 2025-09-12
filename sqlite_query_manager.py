@@ -30,7 +30,7 @@ class SqliteQueryManagerApp(tk.Tk):
 
         #=============================================================================================Окно(настройка)
         self.title("Sqlite db query manager")
-        self.geometry("500x500")
+        self.geometry("500x500+100+100")
         self.minsize(width=500, height=500)
         #=============================================================================================Окно(настройка)
 
@@ -49,7 +49,7 @@ class SqliteQueryManagerApp(tk.Tk):
 
         select_button = ttk.Button(db_file_selection_frame, text="select db file", command=self.pick_db_file)
         select_button.pack(side="left")
-        selected_db_file_view = ttk.Label(db_file_selection_frame, textvariable=self.selected_db)
+        selected_db_file_view = ttk.Label(db_file_selection_frame, textvariable=self.selected_db, font=("Arial", 10, "bold"))
         selected_db_file_view.pack(side="left")
 
         db_file_selection_frame.pack(fill="x")
