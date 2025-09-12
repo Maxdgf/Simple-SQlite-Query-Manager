@@ -31,6 +31,7 @@ class SqliteQueryManagerApp(tk.Tk):
         #=============================================================================================Окно(настройка)
         self.title("Sqlite db query manager")
         self.geometry("500x500")
+        self.minsize(width=500, height=500)
         #=============================================================================================Окно(настройка)
 
         #============================================================================Переменные состояния
@@ -108,6 +109,8 @@ class SqliteQueryManagerApp(tk.Tk):
     @async_handler
     async def execute_query(self):
         self.progressbar_field_frame.pack(fill="x")
+        self.config(cursor="watch")
+        self.query_result_field.config(cursor="watch")
 
         try:
             self.clear_query_output_field() #очищаем поле для нового результата
@@ -152,6 +155,8 @@ class SqliteQueryManagerApp(tk.Tk):
             messagebox.showerror("Error", f"Query execution failed.\nexception:\n{e}")
 
         self.progressbar_field_frame.pack_forget()  
+        self.config(cursor="arrow")
+        self.query_result_field.config(cursor="arrow")
     #==========================================================================================================Функции
 
 if __name__ == "__main__":
