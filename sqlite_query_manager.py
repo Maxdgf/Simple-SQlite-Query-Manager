@@ -5,9 +5,7 @@
 '''
 
 #important libs
-import os
-import asyncio
-import sqlite3
+import sqlite3, os
 import tkinter as tk
 import pandas as pd
 from tabulate import tabulate
@@ -22,7 +20,6 @@ from tkinter.scrolledtext import ScrolledText
 class SqliteQueryManagerApp(tk.Tk):
     #===============================================Constants
     DB_CONNECTION_TIMEOUT: int = 5
-    ASYNC_OPERATIONS_DELAY: float = 0.2
     #===============================================Constants
 
     def __init__(self):
@@ -30,13 +27,13 @@ class SqliteQueryManagerApp(tk.Tk):
 
         #=============================================================================================Window config
         self.title("Sqlite db query manager")
-        self.geometry("500x500+100+100")
+        self.geometry("500x500")
         self.minsize(width=500, height=500)
         #=============================================================================================Window config
 
         #============================================================================State vars
         self.selected_db = StringVar(self)
-        self.user_query = StringVar(self)
+        self.user_query = StringVar(self, value="SELECT * FROM ")
         self.query_execution_progress = IntVar(self)
         #============================================================================State vars
 
@@ -100,10 +97,8 @@ class SqliteQueryManagerApp(tk.Tk):
             if os.path.exists(db_path):
                 self.selected_db.set(db_path)
                 messagebox.showinfo("Info", "Db file selected!")
-            else:
-                messagebox.showerror("Error", "Db file path not exists!")
-        else:
-            messagebox.showwarning("Warning", "Db file not selected!")
+            else: messagebox.showerror("Error", "Db file path not exists!")
+        else: messagebox.showwarning("Warning", "Db file not selected!")
 
     #asynchronous function for executing a query to the db
     @async_handler
@@ -126,17 +121,15 @@ class SqliteQueryManagerApp(tk.Tk):
 
                     self.query_execution_progress.set(50)
                     self.percent_view.config(text=f"({self.query_execution_progress.get()})%")
-                    await asyncio.sleep(self.ASYNC_OPERATIONS_DELAY) #async sleep
                     
                     result = cursor.fetchall()
                     connection.close() #close connection
 
                     self.query_execution_progress.set(80)
                     self.percent_view.config(text=f"({self.query_execution_progress.get()})%")
-                    await asyncio.sleep(self.ASYNC_OPERATIONS_DELAY) #asyns sleep
 
                     df = pd.DataFrame(result)
-                    result_table = tabulate(df, headers="keys", tablefmt="grid")
+                    result_table = tabulate(df, tablefmt="grid", showindex=False)
 
                     self.query_execution_progress.set(100)
                     self.percent_view.config(text=f"({self.query_execution_progress.get()})%")
@@ -145,14 +138,10 @@ class SqliteQueryManagerApp(tk.Tk):
                     if len(result_table) > 0: #if result is empty ->
                         self.query_result_field.insert("1.0", result_table)
                         messagebox.showinfo("Info", f"Your query:\n[{self.user_query.get()}]\ncompleted succesfully! See result now)))")
-                    else:
-                        messagebox.showwarning("Warning", f"Your query:\n[{self.user_query.get()}]\ncompleted succesfully, but query result is empty(")
-                else:
-                    messagebox.showerror("Error", "Your query is empty!")
-            else:
-                messagebox.showerror("Error", "Please, select db file.")  
-        except Exception as e:
-            messagebox.showerror("Error", f"Query execution failed.\nexception:\n{e}")
+                    else: messagebox.showwarning("Warning", f"Your query:\n[{self.user_query.get()}]\ncompleted succesfully, but query result is empty(")
+                else: messagebox.showerror("Error", "Your query is empty!")
+            else: messagebox.showerror("Error", "Please, select db file.")  
+        except Exception as e: messagebox.showerror("Error", f"Query execution failed.\nexception:\n{e}")
 
         self.progressbar_field_frame.pack_forget()  
         self.config(cursor="arrow")
@@ -162,4 +151,3 @@ class SqliteQueryManagerApp(tk.Tk):
 if __name__ == "__main__":
     sqliteQueryManagerApp = SqliteQueryManagerApp()
     async_mainloop(sqliteQueryManagerApp) #launch main async loop
-
