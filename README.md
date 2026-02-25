@@ -3,8 +3,8 @@
 
 | Demo screen |
 | :----------------|
-| <img width="700" height="550" src="previews/query_manager_demo.png"> |
-| <a href="previews/query_manager_demo.png">See demo screen</a> |
+| <img width="700" height="550" src="previews/preview.png"> |
+| <a href="previews/preview.png">See demo screen</a> |
 
 # Utility setup
 
