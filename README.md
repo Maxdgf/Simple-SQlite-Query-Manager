@@ -9,13 +9,13 @@
 # Utility setup
 
 ## 🖥️Clone this repo:
-    git clone https://github.com/Maxdgf/CSV-viewer.git
+    git clone https://github.com/Maxdgf/Simple-SQlite-Query-Manager.git
 
 ## 🕹️Go to cloned repo:
-    cd CSV-viewer
+    cd Simple-SQlite-Query-Manager
 
 ## 📃Install important libs:
     pip install -r requirements.txt
 
 ## 🔌Launch utility:
-    python CsvViewerApp.py
+    python sqlite_query_manager.py
