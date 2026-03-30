@@ -52,6 +52,8 @@ class SqliteDbManager:
         query: query to db
         """
         try:
+            start_time = time.monotonic() # start time point
+
             connection = sqlite3.connect(db_path)
             cursor = connection.cursor()
 
@@ -64,12 +66,14 @@ class SqliteDbManager:
             result += cursor.fetchall() # add query result
             connection.close() # close connection
 
+            end_time = time.monotonic() # end time point
+            execution_time = end_time - start_time # calculate query execution time in seconds
+
             result = self.__format_result_to_table(result) # format result
 
-            return self._QueryResult(data=result, exception_message=None)
+            return self._QueryResult(data=f"{result}\n\nQuery was completed in {execution_time:.7f} sec", exception_message=None)
         except Exception as e:
             return self._QueryResult(data=None, exception_message=f"Exception occured: {e}")
-
 
 class SqliteQueryManagerApp(tk.Tk):
     def __init__(self) -> None:
