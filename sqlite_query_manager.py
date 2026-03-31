@@ -156,7 +156,9 @@ class SqliteQueryManagerApp(tk.Tk):
         current_time = time.strftime("%H:%M:%S", time.localtime()) # get time now
         event_message = f"[{current_time}]{config.header}" + message
         self.events_view.insert(items_count, event_message)
+        self.events_view.see(tk.END) # scroll down
 
+        # set color to message text
         if config.color is not None:
             self.events_view.itemconfig(items_count, fg=config.color)
 
